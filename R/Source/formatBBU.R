@@ -12,7 +12,7 @@ formatBBU <- function(db1= secPos, db2= allCash) {
     db2 <- db2[value !=0]
     
     db2[, Price:= numeric()]
-    db2[, Port:=  "DF EQUTIY"]
+    db2[, Port:=  "DF EQUITY"]
     
     db2[variable == "OffsetCash", variable:= paste(Ccy, "Curncy", sep=" ")]
     

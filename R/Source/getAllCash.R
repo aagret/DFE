@@ -10,7 +10,7 @@ getAllCash <- function(db= db1, ...){
     setkey(db, Date)
     
     nonCum <- c("NetDividend", "PaidFees", "PendingDividend", "PaidInterest", "SubRed",  "Wh_Tax")
-    db[, (nonCum):= lapply(.SD, function(x){ x[is.na(x)] <-0; x }), .SDcols= nonCum]
+    #db[, (nonCum):= lapply(.SD, function(x){ x[is.na(x)] <-0; x }), .SDcols= nonCum]
     
     cum <- colnames(db)[!colnames(db) %in% nonCum]
     db[, (cum):= lapply(.SD, function(x) {na.locf(x, na.rm=FALSE)}), by= Ccy, .SDcols= cum]
@@ -18,18 +18,18 @@ getAllCash <- function(db= db1, ...){
     
     db[is.na(db)] <- 0
     
-    # calc all taxes
-    db[, Tax:= diff(c(0, PendingWh_Tax)), by= Ccy]
-    db[, Tax:= min(0, Tax), by= .(Ccy, Date)]
-    db[, Tax:= cumsum(Tax), by= Ccy]
+    # # calc all taxes
+    # db[, Tax:= diff(c(0, PendingWh_Tax)), by= Ccy]
+    # db[, Tax:= min(0, Tax), by= .(Ccy, Date)]
+    # db[, Tax:= cumsum(Tax), by= Ccy]
     
     # calc all Fees
-    db[, Fees:= diff(c(0, AccruedFees)), by= Ccy]
-    db[, Fees:= min(0, Fees), by= .(Ccy, Date)]
-    db[, Fees:= cumsum(Fees), by= Ccy]
+    #db[, Fees:= diff(c(0, AccruedFees)), by= Ccy]
+    #db[, Fees:= min(0, Fees), by= .(Ccy, Date)]
+    db[, Fees:= cumsum(PaidFees), by= Ccy]
     
     # calc offset cash
-    db[, OffsetCash:= Cash - Tax - Fees, by= Ccy]
+    db[, OffsetCash:= Cash - Fees, by= Ccy]
     
     
     return(db)

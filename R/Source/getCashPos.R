@@ -4,13 +4,13 @@ getCashPos <- function(fileList= fileList) {
     
     fileSelect <- fileList[grepl("SolCptCsh", fileList)]
     
-    db <- getData(fileSelect, c(1, 3))[grep("K0124100", ClientID), 
+    db <- getData(fileSelect, c(1, 3))[grep("K0124101", ClientID), 
                                        .(ClientID, ValueDate,
                                          Accountcurrency, BalanceatValueDate)]
     
     colnames(db) <- c("Port", "Date", "Ccy", "Amount")
     
-    db[, ':=' (Port=  "DF EQUITY",
+    db[, ':=' (Port=  "DF CREDIT",
                Date= as.Date(Date, "%Y-%m-%d"),
                Type= "Cash",
                Amount= as.numeric(gsub(",", ".", gsub("\\.", "", Amount)))), ]

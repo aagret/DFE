@@ -37,5 +37,14 @@ allCash <- getAllCash(cashPos, cashMvmt, accruedFees, pendingDiv)
 # format file for Bloomberg BBU
 uploadBBU <- formatBBU(secPos, allCash)
 
+
+# add positions before auto upload 
+oldPos <- fread("/home/artha/R-Projects/DFE/Config/positionsBeforeAutoUpload.csv")[,-c(1, 6, 7)]
+oldPos[, ':=' (Price=0,
+               Date= as.Date(Date, format="%Y-%m-%d"))]
+
+uploadBBU  <- rbind(uploadBBU, oldPos)
+
 # save file
 fwrite(uploadBBU, file="/home/artha/R-Projects/DFE/upload/positionsDFE.csv")
+

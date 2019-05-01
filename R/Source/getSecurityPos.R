@@ -19,4 +19,7 @@ getSecurityPos <- function(fileList= fileList) {
     
     db <- addTicker(db)
     
+    db <- db[, .(Port, Date, Ticker, Amount), ]
+    db[, Price:=numeric()]
+    
 }

@@ -14,7 +14,7 @@ getNavData <- function(fileList= fileList) {
                       "Position", "Cost", "EurCost", "Accrued","EurAccrued",
                       "PrepaidInterest", "EurPrepaidInterest")
     
-    db[, ':=' (Port=  "DF EQUITY",
+    db[, ':=' (Port=  "DF CREDIT",
                Date= as.Date(Date, format= "%d/%m/%Y"))]
     
     setkey(db, Date, Ccy)
